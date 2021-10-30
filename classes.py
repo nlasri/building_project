@@ -5,18 +5,35 @@ Created on Tue Sep 28 08:26:36 2021
 @author: sguerrag
 """
 
+import numpy as np
+
 class Building:
     
-    def __init__(self, name_building, nb_floors_max):
+    def __init__(self, name_building = "", nb_floors_max = 1,areas =  "",elements = "",floor):
         self.name_building = name_building
         self.nb_floors_max = nb_floors_max
+        self.area = areas
+        self.element = elements
+        self.floor = floor
+        self.nb_rooms_max = 40
+        self.space = np.zeros((self.nb_floors_max,nb_rooms_max,4))
         
+    def get_place_areas(self,number):
+        return(number)
+    
+    def get_space(self):
+        return(self.space)
         
 class Element:
     
     
-    def __init__(self, coordinates):
+    def __init__(self, coordinates,floor):
         self.coordinates = coordinates
+        self.floor = floor
+        self.place = Building(self.floor)
+    
+        
+        
         
 class Wall(Element):
     thickness = 0
@@ -25,9 +42,56 @@ class Wall(Element):
     
 class Area:
     
-    def __init__(self, coordinates,name):
+    def __init__(self, coordinates,floor, l1, l2):
         self.coordinates = coordinates
-        self.name = name
+        self.floor = floor
+        self.place = Building(self.floor)
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.longueur_one_room = l1
+        self.largeur_one_room = l2
+        
+    def set_place_building(self):
+        table_coordinates = place.get_space()
+        for i in range(table_coordinates[floor]):
+            if table_coordinates[floor][i] != [0,0,0,0]:
+                table_coordinates[floor][i] = self.coordinates
+                return(table_coordinates)
+    
+    # def sort_agencement(self):
+    #     table_coordinates = self.set_place_building
+    #     indice_floor_trie = np.argsort(table_coordinates[self.floor], axis = 0)
+    #     table_trie_abscisse = np.zeros((nb_rooms_max,4))
+    #     table_trie_ordonne = np.zeros((nb_rooms_max,4))
+    #     indice_non_nul = 0
+    #     while(indice_floor_trie == [0,0,0,0]):
+    #         indice_non_nul += 1
+    #     for i in range(indice_non_nul,nb_rooms_max):
+    #         table_trie_abscisse[i] = table_coordinates[floor][indice_floor_trie[indice_non_nul+i][0]]
+    #         table_trie_ordonne[i] = table_coordinates[floor][indice_floor_trie[indice_non_nul+i][2]]
+    #     return(table_trie_abscisse,table_trie_ordonne)
+            
+    def sort_agencement(self):
+        table_coordinates = self.set_place_building
+        tableau_trie = np.zeros((self.nb_rooms_max_longueur,self.nb_rooms_max_largeur,4))
+        for i in range(self.nb_rooms_max_longueur):
+            for j in range(self.nb_rooms_min_longueur):
+                abscisse_gauche = table_coordinates[self.floor][i][0] #Consider for now that all rooms have same size
+                ordonne_gauche = table_coordinates[self.floor][i][2]
+                if table_coordinates[self.floor][i] != [0,0,0,0]:
+                    number_room_abscisse = abscisse_gauche / l1
+                    number_room_ordonne = ordonne_gauche / l2
+                    tableau_trie[number_room_abscisse][number_room_ordonne] = table_coordinates[i][j]
+        return(tableau_trie)
+    
+    def possible_agencement(self):
+        table_trie = self.sort_agencement
+        abscisse_area_gauche = self.coordinates[0]
+        ordonne_area_gauche = self.coordinates[2]
+        number_room_abscisse = abscisse_area_gauche / l1
+        number_room_ordonne = ordonne_ordonne_gauche / l2
+        return(table_trie[number_room_abscisse][number_room_ordonne] == [0,0,0,0])
+                
         
 class Room(Area):
     
@@ -47,4 +111,7 @@ class Corridor(Area):
         self.coordinates = coordinates
         self.name = name    
     
-B = Building("B",10)
+B = Building()
+B.space
+E = Element()
+B.space
