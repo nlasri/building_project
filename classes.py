@@ -9,14 +9,16 @@ import numpy as np
 
 class Building:
     
-    def __init__(self, name_building = "", nb_floors_max = 1,areas =  "",elements = "",floor):
+    def __init__(self,floor,nb_rooms_max, name_building = "", nb_floors_max = 5,areas =  "",elements = ""):
         self.name_building = name_building
         self.nb_floors_max = nb_floors_max
         self.area = areas
         self.element = elements
         self.floor = floor
-        self.nb_rooms_max = 40
-        self.space = np.zeros((self.nb_floors_max,nb_rooms_max,4))
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.nb_rooms_max = 36
+        self.space = np.zeros((self.nb_floors_max,self.nb_rooms_max_longueur,self.nb_rooms_max_largeur,4))
         
     def get_place_areas(self,number):
         return(number)
@@ -45,18 +47,25 @@ class Area:
     def __init__(self, coordinates,floor, l1, l2):
         self.coordinates = coordinates
         self.floor = floor
-        self.place = Building(self.floor)
+        self.nb_rooms_max = 40
+        self.place = Building(self.floor, self.nb_rooms_max)
         self.nb_rooms_max_longueur = 6
         self.nb_rooms_max_largeur = 6
         self.longueur_one_room = l1
         self.largeur_one_room = l2
         
     def set_place_building(self):
-        table_coordinates = place.get_space()
-        for i in range(table_coordinates[floor]):
-            if table_coordinates[floor][i] != [0,0,0,0]:
-                table_coordinates[floor][i] = self.coordinates
-                return(table_coordinates)
+        table_coordinates = self.place.get_space()
+        #compteur = 0
+        #for i in range(len(table_coordinates[self.floor])):
+            #print(table_coordinates[self.floor][i])
+        print(table_coordinates[self.floor][self.coordinates[0]][self.coordinates[1]])
+        if np.all((table_coordinates[self.floor][self.coordinates[0]][self.coordinates[1]]) == [0,0,0,0]): #np.all pour que toutes les valeurs doivent être égales.
+            table_coordinates[self.floor][self.coordinates[0]][self.coordinates[1]] = self.coordinates
+            print("Set the room ok")
+        else:
+            print("Room occupied")
+        return(table_coordinates)
     
     # def sort_agencement(self):
     #     table_coordinates = self.set_place_building
@@ -77,10 +86,10 @@ class Area:
         for i in range(self.nb_rooms_max_longueur):
             for j in range(self.nb_rooms_min_longueur):
                 abscisse_gauche = table_coordinates[self.floor][i][0] #Consider for now that all rooms have same size
-                ordonne_gauche = table_coordinates[self.floor][i][2]
+                ordonne_gauche = table_coordinates[self.floor][i][1]
                 if table_coordinates[self.floor][i] != [0,0,0,0]:
-                    number_room_abscisse = abscisse_gauche / l1
-                    number_room_ordonne = ordonne_gauche / l2
+                    number_room_abscisse = abscisse_gauche / self.longueur_one_room
+                    number_room_ordonne = ordonne_gauche / self.largeur_one_room
                     tableau_trie[number_room_abscisse][number_room_ordonne] = table_coordinates[i][j]
         return(tableau_trie)
     
@@ -88,8 +97,8 @@ class Area:
         table_trie = self.sort_agencement
         abscisse_area_gauche = self.coordinates[0]
         ordonne_area_gauche = self.coordinates[2]
-        number_room_abscisse = abscisse_area_gauche / l1
-        number_room_ordonne = ordonne_ordonne_gauche / l2
+        number_room_abscisse = abscisse_area_gauche / self.longueur_one_room
+        number_room_ordonne = ordonne_area_gauche / self.largeur_one_room
         return(table_trie[number_room_abscisse][number_room_ordonne] == [0,0,0,0])
                 
         
@@ -111,7 +120,7 @@ class Corridor(Area):
         self.coordinates = coordinates
         self.name = name    
     
-B = Building()
-B.space
-E = Element()
-B.space
+B = Building(1,40)
+bb = B.get_place_areas(40)
+Ar = Area([2,4,2,2], 1, 2,2)
+aa = Ar.set_place_building()
