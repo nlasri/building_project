@@ -77,9 +77,8 @@ class Element:
         
         
 class Wall(Element):
-    thickness = 0
-    def __init__(self,color):
-        self.color = color
+    def __init__(self,room):
+        self.room = room
     
 class Area:
     
@@ -177,6 +176,9 @@ class Room(Area):
     def __init__(self, coordinates,name):
         self.coordinates = coordinates
         self.name = name
+
+    def get_coordinates(self):
+        return(self.coordinates)
         
 class Outside(Area):
     
