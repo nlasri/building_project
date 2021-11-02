@@ -77,8 +77,20 @@ class Element:
         
         
 class Wall(Element):
-    def __init__(self,room):
+
+    def __init__(self, coordinates,floor,l1,l2, room):
+        self.coordinates = coordinates
+        self.floor = floor
+        self.nb_rooms_max = 40
+        self.place = Building(self.floor, self.nb_rooms_max)
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.longueur_one_room = l1
+        self.largeur_one_room = l2
         self.room = room
+
+    def create_wall(self):
+
     
 class Area:
     
