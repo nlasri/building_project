@@ -12,13 +12,15 @@ class Building:
     def collision(self, new_area, floor):
         for area in self.areas[floor]:
             if (new_area.coordinate_x + new_area.width > area.coordinate_x) and (new_area.coordinate_x < area.coordinate_x + area.width):
-                return True
+                if (new_area.coordinate_y + new_area.height > area.coordinate_y) and (new_area.coordinate_y < area.coordinate_y + area.height):
+                    return True
+                elif (new_area.coordinate_y < area.coordinate_y + area.height) and (new_area.coordinate_y + new_area.height > area.coordinate_y):
+                    return True
             elif (new_area.coordinate_x < area.coordinate_x + area.width) and (new_area.coordinate_x + new_area.width > area.coordinate_x):
-                return True
-            elif (new_area.coordinate_y + new_area.height > area.coordinate_y) and (new_area.coordinate_y < area.coordinate_y + area.height):
-                return True
-            elif (new_area.coordinate_y < area.coordinate_y + area.height) and (new_area.coordinate_y + new_area.height > area.coordinate_y):
-                return True
+                if (new_area.coordinate_y + new_area.height > area.coordinate_y) and (new_area.coordinate_y < area.coordinate_y + area.height):
+                    return True
+                elif (new_area.coordinate_y < area.coordinate_y + area.height) and (new_area.coordinate_y + new_area.height > area.coordinate_y):
+                    return True
             return False
 
     def area_not_in_building(self, area):
@@ -73,13 +75,15 @@ class Area:
     def collision(self, new_element):
         for element in self.elements:
             if (new_element.coordinate_x + new_element.width > element.coordinate_x) and (new_element.coordinate_x < element.coordinate_x + element.width):
-                return True
+                if (new_element.coordinate_y + new_element.height > element.coordinate_y) and (new_element.coordinate_y < element.coordinate_y + element.height):
+                    return True
+                elif (new_element.coordinate_y < element.coordinate_y + element.height) and (new_element.coordinate_y + new_element.height > element.coordinate_y):
+                    return True
             elif (new_element.coordinate_x < element.coordinate_x + element.width) and (new_element.coordinate_x + new_element.width > element.coordinate_x):
-                return True
-            elif (new_element.coordinate_y + new_element.height > element.coordinate_y) and (new_element.coordinate_y < element.coordinate_y + element.height):
-                return True
-            elif (new_element.coordinate_y < element.coordinate_y + element.height) and (new_element.coordinate_y + new_element.height > element.coordinate_y):
-                return True
+                if (new_element.coordinate_y + new_element.height > element.coordinate_y) and (new_element.coordinate_y < element.coordinate_y + element.height):
+                    return True
+                elif (new_element.coordinate_y < element.coordinate_y + element.height) and (new_element.coordinate_y + new_element.height > element.coordinate_y):
+                    return True
             return False
 
     def area_not_in_building(self, element):
@@ -139,14 +143,17 @@ class Wall(Element):
 
 
 building = Building(20, 20, 2)
-room1 = Area(5,5, 5, 5)
+room1 = Area(0,0, 10, 10)
 building.add_area(room1, 1)
 
-room2 = Area(5,5, 2, 2)
+room2 = Area(10, 0, 10, 10)
 building.add_area(room2, 1)
 
-room3 = Area(0,0, 5, 5)
+room3 = Area(0,10, 10, 10)
 building.add_area(room3, 1)
+
+room4 = Area(10,10, 10, 10)
+building.add_area(room4, 1)
 
 print(building.areas)
 
@@ -166,7 +173,7 @@ def placer_room_3(area, canvas, color_room, name):
                 canvas.place(x=room.coordinate_x*20, y=height - room.coordinate_y*20 - room.height*20)
                 canvas.create_text(room.width*10, room.height*10, text=name, font="Arial 16 italic", fill="black")
                         
-print("okaaaay")
+
 placer_room_3(building.areas, canvas, 'orange', "room")
 
 canvas.pack()
