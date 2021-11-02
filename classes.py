@@ -18,8 +18,8 @@ class Building:
         self.nb_rooms_max_longueur = 6
         self.nb_rooms_max_largeur = 6
         self.nb_rooms_max = 36
-        self.grid_lenght = 50
-        self.grid_height = 50
+        self.grid_lenght = 12
+        self.grid_height = 12
         self.space = np.zeros((self.nb_floors_max,self.nb_rooms_max_longueur,self.nb_rooms_max_largeur,4))
         self.space_element = np.zeros((self.nb_floors_max,self.grid_lenght,self.grid_height,4))
         
@@ -33,7 +33,7 @@ class Building:
         self.space[floor] = arrangement
 
     def get_space_element(self):
-        return(self.element)
+        return(self.space_element)
 
     def change_arrangement_element(self,arrangement,floor):
         self.space_element[floor] = arrangement
@@ -53,23 +53,23 @@ class Element:
     
         
     def set_place_building(self):
-        table_coordinates = self.place.get_space_element()[self.floor]
-        print(table_coordinates[self.coordinates[0]][self.coordinates[1]])
-        if np.all((table_coordinates[self.coordinates[0]][self.coordinates[1]]) == [0,0,0,0]): #np.all pour que toutes les valeurs doivent être égales.
-            table_coordinates[self.coordinates[0]][self.coordinates[1]] = self.coordinates
-            print("Set the room ok")
+        element_coordinates = self.place.get_space_element()[self.floor]
+        print(element_coordinates[self.coordinates[0]][self.coordinates[1]])
+        if np.all((element_coordinates[self.coordinates[0]][self.coordinates[1]]) == [0,0,0,0]): #np.all pour que toutes les valeurs doivent être égales.
+            element_coordinates[self.coordinates[0]][self.coordinates[1]] = self.coordinates
+            print("Set the element ok")
         else:
-            print("Room occupied")
-        return(table_coordinates)
+            print("Space occupied")
+        return(element_coordinates)
 
-    def set_many_places_building(self,table_many_coordinates):
-        n = len(table_many_coordinates)
-        table_coordinates = self.place.get_space()[self.floor]
+    def set_many_places_building(self,element_many_coordinates):
+        n = len(element_many_coordinates)
+        element_coordinates = self.place.get_space()[self.floor]
         for i in range(n):
-            table_coordinates = self.set_place_building(table_many_coordinates[i])
-        return(table_coordinates)
+            element_coordinates = self.set_place_building(element_many_coordinates[i])
+        return(element_coordinates)
 
-    def put_arrangement_building(self,arrangement):
+    def put_arrangement_element_building(self,arrangement):
         #place_building = self.place.get_space()
         #place_building[self.floor] = arrangement
         return(arrangement)
@@ -198,3 +198,11 @@ aa = Ar.set_place_building()
 cc = B.change_arrangement(aa,1)
 
 dd = B.get_space()
+
+El = Element([3,5,3,0],1,1,1)
+
+ee = El.set_place_building()
+
+ff = B.change_arrangement_element(ee,1)
+
+gg = B.get_space_element()
