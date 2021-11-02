@@ -18,7 +18,10 @@ class Building:
         self.nb_rooms_max_longueur = 6
         self.nb_rooms_max_largeur = 6
         self.nb_rooms_max = 36
+        self.grid_lenght = 12
+        self.grid_height = 12
         self.space = np.zeros((self.nb_floors_max,self.nb_rooms_max_longueur,self.nb_rooms_max_largeur,4))
+        self.space_element = np.zeros((self.nb_floors_max,self.grid_lenght,self.grid_height,4))
         
     def get_place_areas(self,number):
         return(number)
@@ -28,22 +31,93 @@ class Building:
 
     def change_arrangement(self,arrangement,floor):
         self.space[floor] = arrangement
+
+    def get_space_element(self):
+        return(self.space_element)
+
+    def change_arrangement_element(self,arrangement,floor):
+        self.space_element[floor] = arrangement
         
 class Element:
     
     
-    def __init__(self, coordinates,floor):
+    def __init__(self, coordinates,floor,l1,l2):
         self.coordinates = coordinates
         self.floor = floor
-        self.place = Building(self.floor)
+        self.nb_rooms_max = 40
+        self.place = Building(self.floor, self.nb_rooms_max)
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.longueur_one_room = l1
+        self.largeur_one_room = l2
     
         
+    def set_place_building(self):
+        element_coordinates = self.place.get_space_element()[self.floor]
+        print(element_coordinates[self.coordinates[0]][self.coordinates[1]])
+        if np.all((element_coordinates[self.coordinates[0]][self.coordinates[1]]) == [0,0,0,0]): #np.all pour que toutes les valeurs doivent être égales.
+            element_coordinates[self.coordinates[0]][self.coordinates[1]] = self.coordinates
+            print("Set the element ok")
+        else:
+            print("Space occupied")
+        return(element_coordinates)
+
+    def set_many_places_building(self,element_many_coordinates):
+        n = len(element_many_coordinates)
+        element_coordinates = self.place.get_space()[self.floor]
+        for i in range(n):
+            element_coordinates = self.set_place_building(element_many_coordinates[i])
+        return(element_coordinates)
+
+    def put_arrangement_element_building(self,arrangement):
+        #place_building = self.place.get_space()
+        #place_building[self.floor] = arrangement
+        return(arrangement)
+                
         
         
 class Wall(Element):
-    thickness = 0
-    def __init__(self,color):
-        self.color = color
+
+    def __init__(self, room):
+        # self.coordinates = coordinates
+        # self.floor = floor
+        # self.nb_rooms_max = 40
+        # self.place = Building(self.floor, self.nb_rooms_max)
+        # self.nb_rooms_max_longueur = 6
+        # self.nb_rooms_max_largeur = 6
+        # self.longueur_one_room = l1
+        # self.largeur_one_room = l2
+        self.room = room
+
+    def create_wall(self):
+        room_coordinates = self.room.get_coordinates()
+        table_walls = np.zeros((4,4))
+        room_coordinates_abs = room_coordinates[0]
+        room_coordinates_ord = room_coordinates[1]
+        room_coordinates_length = room_coordinates[2]
+        room_coordinates_height = room_coordinates[3]
+        table_walls[0] = [room_coordinates_abs, room_coordinates_ord, room_coordinates_length, 0]
+        table_walls[1] = [room_coordinates_abs, room_coordinates_ord, 0, room_coordinates_height]
+        table_walls[2] = [room_coordinates_abs, room_coordinates_ord + room_coordinates_height, room_coordinates_length, 0]
+        table_walls[3] = [room_coordinates_abs + room_coordinates_length, room_coordinates_ord, 0, room_coordinates_height]
+        return(table_walls)
+
+class Door(Element):
+
+    def __init__(self, coordinates,floor,l1,l2,walls):
+        self.coordinates = coordinates
+        self.floor = floor
+        self.nb_rooms_max = 40
+        self.place = Building(self.floor, self.nb_rooms_max)
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.longueur_one_room = l1
+        self.largeur_one_room = l2
+        self.walls = walls
+
+    def is_possible(self):
+        table_walls = self.walls.create_wall()
+        if coordinates[0] == table_walls[0]:
     
 class Area:
     
@@ -138,9 +212,18 @@ class Area:
         
 class Room(Area):
     
-    def __init__(self, coordinates,name):
+    def __init__(self, coordinates,floor,l1,l2):
         self.coordinates = coordinates
-        self.name = name
+        self.floor = floor
+        self.nb_rooms_max = 40
+        self.place = Building(self.floor, self.nb_rooms_max)
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.longueur_one_room = l1
+        self.largeur_one_room = l2
+
+    def get_coordinates(self):
+        return(self.coordinates)
         
 class Outside(Area):
     
@@ -162,4 +245,25 @@ aa = Ar.set_place_building()
 cc = B.change_arrangement(aa,1)
 
 dd = B.get_space()
+
+El = Element([3,5,3,0],1,1,1)
+
+ee = El.set_place_building()
+
+ff = B.change_arrangement_element(ee,1)
+
+gg = B.get_space_element()
+
+room = Room([1,1,2,2],2,2,2)
+
+hh = room.set_place_building()
+
+B.change_arrangement(hh,2)
+
+ii = B.get_space()
+
+walls1 = Wall(room)
+
+Walls2 = walls1.create_wall()
+
 
