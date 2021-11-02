@@ -36,6 +36,7 @@ class Building:
         elif self.area_not_in_building(area):
             print("Error : The area is not in the building")
         else :
+            area.create_wall()
             self.areas[floor].append(area)
 
     def get_areas(self):
@@ -62,6 +63,7 @@ class Area:
         self.coordinate_y = coordinate_y
         self.elements = []
         self.walls = np.zeros((4,1))
+        self.doors = []
 
     def get_width(self):
         return self.width
@@ -135,11 +137,26 @@ class Element():
 
 
 class Wall(Element):
-    def __init__(self, coordinate_x, coordinate_y, width, height):
-        self.width = width
-        self.height = height
-        self.coordinate_x = coordinate_x
-        self.coordinate_y = coordinate_y
+    def __init__(self, coordinate_x, coordinate_y, width, heigh):
+        super().__init__(coordinate_x, coordinate_y, width, heigh)
+
+
+class Door(Element):
+    def __init__(self, coordinate_x, coordinate_y, width, heigh):
+        super().__init__(coordinate_x, coordinate_y, width, heigh)
+
+    def is_possible(self, area):
+        table_walls = area.walls
+        if self.coordinate_x == table_walls[0].coordinate_x:
+            return(table_walls[1].coordinate_y < self.coordinate_y < table_walls[1].coordinate_y + table_walls[1].height)
+        if self.coordinate_y == table_walls[0].coordinate_y:
+            return(table_walls[0].coordinate_x < self.coordinate_x < table_walls[0].coordinate_x + table_walls[0].width)
+        if self.coordinate_y == table_walls[2].coordinate_y:
+            return(table_walls[2].coordinate_x < self.coordinate_x < table_walls[2].coordinate_x + table_walls[2].width)
+        if self.coordinate_x == table_walls[3].coordinate_x:
+            return(table_walls[3].coordinate_y < self.coordinate_y < table_walls[3].coordinate_y + table_walls[2].height)
+        else:
+            return(False)
 
 
 building = Building(20, 20, 2)
