@@ -104,32 +104,49 @@ class Wall(Element):
 
 class Door(Element):
 
-    def __init__(self, coordinates,floor,l1,l2,walls):
+    def __init__(self, coordinates,walls):
         self.coordinates = coordinates
-        self.floor = floor
-        self.nb_rooms_max = 40
-        self.place = Building(self.floor, self.nb_rooms_max)
-        self.nb_rooms_max_longueur = 6
-        self.nb_rooms_max_largeur = 6
-        self.longueur_one_room = l1
-        self.largeur_one_room = l2
+        # self.floor = floor
+        # self.nb_rooms_max = 40
+        # self.place = Building(self.floor, self.nb_rooms_max)
+        # self.nb_rooms_max_longueur = 6
+        # self.nb_rooms_max_largeur = 6
+        # self.longueur_one_room = l1
+        # self.largeur_one_room = l2
         self.walls = walls
 
     def is_possible(self):
         table_walls = self.walls.create_wall()
-        if coordinates[0] == table_walls[0]:
-    
+        if self.coordinates[0] == table_walls[0][0]:
+            return(table_walls[1][1] < self.coordinates[1] < table_walls[1][1] + table_walls[1][3])
+        if self.coordinates[1] == table_walls[0][1]:
+            return(table_walls[0][0] < self.coordinates[0] < table_walls[0][0] + table_walls[0][2])
+        if self.coordinates[1] == table_walls[2][1]:
+            return(table_walls[2][0] < self.coordinates[0] < table_walls[2][0] + table_walls[2][2])
+        if self.coordinates[0] == table_walls[3][0]:
+            return(table_walls[3][1] < self.coordinates[1] < table_walls[3][1] + table_walls[2][3])
+        else:
+            return(False)
+
+    def set_door(self):
+        if self.is_possible():
+            print("Set the door ok")
+            return(self.coordinates)
+        else:
+            print("No wall to set the door")
+
+
 class Area:
     
-    def __init__(self, coordinates,floor, l1, l2):
+    def __init__(self, coordinates,floor):
         self.coordinates = coordinates
         self.floor = floor
         self.nb_rooms_max = 40
         self.place = Building(self.floor, self.nb_rooms_max)
         self.nb_rooms_max_longueur = 6
         self.nb_rooms_max_largeur = 6
-        self.longueur_one_room = l1
-        self.largeur_one_room = l2
+        self.longueur_one_room = 2
+        self.largeur_one_room = 2
         
     # def set_place_building_2(self):
     #     table_coordinates = self.place.get_space()
@@ -239,6 +256,7 @@ class Corridor(Area):
     
 B = Building(40,1)
 bb = B.get_place_areas(40)
+
 Ar = Area([2,4,2,2], 1, 2,2)
 aa = Ar.set_place_building()
 
@@ -266,4 +284,7 @@ walls1 = Wall(room)
 
 Walls2 = walls1.create_wall()
 
+door1 = Door([1,2,1,1], walls1)
+
+door2 = door1.set_door()
 
