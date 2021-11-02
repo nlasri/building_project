@@ -158,6 +158,17 @@ class Door(Element):
         else:
             return(False)
 
+class Room(Area):
+    def __init__(self, coordinate_x, coordinate_y, width, heigh):
+        super().__init__(coordinate_x, coordinate_y, width, heigh)
+
+class Corridor(Area):
+    def __init__(self, coordinate_x, coordinate_y, width, heigh):
+        super().__init__(coordinate_x, coordinate_y, width, heigh)
+
+class Outside(Area):
+    def __init__(self, coordinate_x, coordinate_y, width, heigh):
+        super().__init__(coordinate_x, coordinate_y, width, heigh)
 
 building = Building(20, 20, 2)
 room1 = Area(0,0, 10, 10)
