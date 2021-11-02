@@ -173,9 +173,15 @@ class Area:
         
 class Room(Area):
     
-    def __init__(self, coordinates,name):
+    def __init__(self, coordinates,floor,l1,l2):
         self.coordinates = coordinates
-        self.name = name
+        self.floor = floor
+        self.nb_rooms_max = 40
+        self.place = Building(self.floor, self.nb_rooms_max)
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.longueur_one_room = l1
+        self.largeur_one_room = l2
 
     def get_coordinates(self):
         return(self.coordinates)
@@ -208,3 +214,13 @@ ee = El.set_place_building()
 ff = B.change_arrangement_element(ee,1)
 
 gg = B.get_space_element()
+
+room = Room([1,1,2,2],2,2,2)
+
+hh = room.set_place_building()
+
+B.change_arrangement(hh,2)
+
+ii = B.get_space()
+
+
