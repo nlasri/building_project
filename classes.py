@@ -78,19 +78,29 @@ class Element:
         
 class Wall(Element):
 
-    def __init__(self, coordinates,floor,l1,l2, room):
-        self.coordinates = coordinates
-        self.floor = floor
-        self.nb_rooms_max = 40
-        self.place = Building(self.floor, self.nb_rooms_max)
-        self.nb_rooms_max_longueur = 6
-        self.nb_rooms_max_largeur = 6
-        self.longueur_one_room = l1
-        self.largeur_one_room = l2
+    def __init__(self, room):
+        # self.coordinates = coordinates
+        # self.floor = floor
+        # self.nb_rooms_max = 40
+        # self.place = Building(self.floor, self.nb_rooms_max)
+        # self.nb_rooms_max_longueur = 6
+        # self.nb_rooms_max_largeur = 6
+        # self.longueur_one_room = l1
+        # self.largeur_one_room = l2
         self.room = room
 
     def create_wall(self):
-
+        room_coordinates = self.room.get_coordinates()
+        table_walls = np.zeros((4,4))
+        room_coordinates_abs = room_coordinates[0]
+        room_coordinates_ord = room_coordinates[1]
+        room_coordinates_length = room_coordinates[2]
+        room_coordinates_height = room_coordinates[3]
+        table_walls[0] = [room_coordinates_abs, room_coordinates_ord, room_coordinates_length, 0]
+        table_walls[1] = [room_coordinates_abs, room_coordinates_ord, 0, room_coordinates_height]
+        table_walls[2] = [room_coordinates_abs, room_coordinates_ord + room_coordinates_height, room_coordinates_length, 0]
+        table_walls[3] = [room_coordinates_abs + room_coordinates_length, room_coordinates_ord, 0, room_coordinates_height]
+        return(table_walls)
     
 class Area:
     
@@ -234,5 +244,9 @@ hh = room.set_place_building()
 B.change_arrangement(hh,2)
 
 ii = B.get_space()
+
+walls1 = Wall(room)
+
+Walls2 = walls1.create_wall()
 
 
