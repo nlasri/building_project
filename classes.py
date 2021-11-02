@@ -101,6 +101,23 @@ class Wall(Element):
         table_walls[2] = [room_coordinates_abs, room_coordinates_ord + room_coordinates_height, room_coordinates_length, 0]
         table_walls[3] = [room_coordinates_abs + room_coordinates_length, room_coordinates_ord, 0, room_coordinates_height]
         return(table_walls)
+
+class Door(Element):
+
+    def __init__(self, coordinates,floor,l1,l2,walls):
+        self.coordinates = coordinates
+        self.floor = floor
+        self.nb_rooms_max = 40
+        self.place = Building(self.floor, self.nb_rooms_max)
+        self.nb_rooms_max_longueur = 6
+        self.nb_rooms_max_largeur = 6
+        self.longueur_one_room = l1
+        self.largeur_one_room = l2
+        self.walls = walls
+
+    def is_possible(self):
+        table_walls = self.walls.create_wall()
+        if coordinates[0] == table_walls[0]:
     
 class Area:
     
