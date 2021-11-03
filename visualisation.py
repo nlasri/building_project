@@ -34,14 +34,13 @@ def placer_room_2(area, canvas, height):
             canvas.create_text((room.coordinate_x*20+room.coordinate_x*20+room.width*20)/2, height -(room.coordinate_y + room.coordinate_y + room.height)*10, text=room.name, font="Arial 16 italic", fill="blue")
             
 def placer_room_3(area, canvas, color_element, height, fenetre):
-    for floor in area.values():
-            for room in floor:
-                canvas = Canvas(fenetre, width=room.width*20, height=room.height*20, background=room.color)
-                canvas.place(x=room.coordinate_x*20, y=height - room.coordinate_y*20 - room.height*20)
-                canvas.create_text(room.width*10, room.height*10, text=room.name, font="Arial 16 italic", fill="black")
-                for element in room.elements:
-                    canvas_element = Canvas(canvas, width=element.width*20, height=element.height*20, background=color_element)
-                    canvas_element.place(x=element.coordinate_x*20, y=room.height *20 - element.coordinate_y*20 - element.height*20)
+    for room in area:
+        canvas = Canvas(fenetre, width=room.width*20, height=room.height*20, background=room.color)
+        canvas.place(x=room.coordinate_x*20, y=height - room.coordinate_y*20 - room.height*20)
+        canvas.create_text(room.width*10, room.height*10, text=room.name, font="Arial 10 italic", fill="black")
+        for element in room.elements:
+            canvas_element = Canvas(canvas, width=element.width*20, height=element.height*20, background=color_element)
+            canvas_element.place(x=element.coordinate_x*20, y=room.height *20 - element.coordinate_y*20 - element.height*20)
                         
 
 

@@ -60,8 +60,8 @@ class High_design(Building):
         canvas = Canvas(fenetre, width=width, height=height, background='white')
         return canvas
     
-    def build_areas(self, canvas, height, fenetre):
-        placer_room_3(self.areas, canvas, 'blue', height, fenetre)
+    def build_areas(self, floor, canvas, height, fenetre):
+        placer_room_3(floor, canvas, 'blue', height, fenetre)
 
 
 def construct_building2(cls):
@@ -103,12 +103,40 @@ def construct_building2(cls):
 
 
 def construct_building(cls):
+    #Creation of a window
+    root = Tk()
+    root.title("Entry Boxes")
+    root.geometry("600x150")
+    root.configure(background='LightSteelBlue2')
+    title = Label(root, text = 'BUILDING', anchor = CENTER, justify = CENTER, bg='lightsteelblue4')
+    title.grid(row = 0, columnspan = 7, sticky = 'nesw')
+    #parameters of the building
+    my_entries=[]
+    label = ['width', 'height', 'number of floor']
+    for x in range(0,3):
+        my_entry = Entry(root)
+        my_entry.insert(0, label[x])
+        my_entry.grid(row=1, column=x, pady=20, padx=5)
+        my_entries.append(my_entry)
+
+    #button
+    my_button = Button(root, text="Create my building", command= lambda: creation_building(my_entries, root, cls), bg='lightsteelblue4')
+    my_button.grid(row=6, column=0, pady=20)
+    root.mainloop()
+
+
+def creation_building(my_entries, root, cls):
+    values = []
+    for entry in my_entries:
+        values.append(entry.get())
+
+    root.destroy()
+
     #Create building
-    building_created = cls(40, 20, 2)
+    building_created = cls(int(values[0]), int(values[1]), int(values[2])+1)
 
     generate_interface(building_created)
 
-    
     return building_created
 
 def generate_building(my_entries, building_created):
@@ -131,11 +159,23 @@ def generate_building(my_entries, building_created):
     design_building(building_created)
 
 def design_building(building_created):
-    fenetre = Tk()
-    floor = building_created.build_floor(fenetre)
-    building_created.build_areas(floor, building_created.get_height()*20, fenetre)
-    floor.pack()
-    fenetre.mainloop()
+    i=0
+    for floor_areas in building_created.areas.values():
+        fenetre = Tk()
+        floor = building_created.build_floor(fenetre)
+        building_created.build_areas(floor_areas, floor, building_created.get_height()*20, fenetre)
+        floor.pack()
+
+        #Display floor
+        title = Label(fenetre, text = 'Floor'+str(i), anchor = CENTER, justify = CENTER, bg='lightsteelblue4')
+        title.pack()
+        # Button for closing
+        exit_button = Button(fenetre, text="Exit", command=fenetre.destroy)
+        exit_button.pack(pady=20)
+
+        i+=1
+        
+        
 
 if __name__ == "__main__":
     building = construct_building(High_design)
