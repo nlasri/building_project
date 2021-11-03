@@ -23,43 +23,27 @@ def placer_room(building, design_building, signe):
 placer_room(building, design_building, 1)
 placer_room(couloir, design_building, 2)
 
-print(design_building)
 
-
-
- 
-
-fenetre = Tk()
-
-# canvas
-width=longueur*20
-height=largeur*20
-canvas = Canvas(fenetre, width=width, height=height, background='white')
-
-
-def placer_room_2(building, canvas, color_wall, name):
-    for room_largeur in building:
-        for room in room_largeur:
-            canvas.create_line(room[0]*20, height - room[1]*20, (room[0])*20, height - (room[1]+room[3])*20, fill=color_wall) #mur est
-            canvas.create_line((room[0]+room[2])*20, height - room[1]*20, (room[0]+room[2])*20, height - (room[1]+room[3])*20, fill=color_wall) #mur ouest
-            canvas.create_line(room[0]*20, height - room[1]*20, (room[0]+room[2])*20, height - room[1]*20, fill=color_wall) #mur nord
-            canvas.create_line((room[0])*20, height - (room[1]+room[3])*20, (room[0]+room[2])*20, height - (room[1]+room[3])*20, fill=color_wall) #mur sud
-            canvas.create_text((room[0]*20+room[0]*20+room[2]*20)/2, height -(room[1] + room[1] + room[3])*10, text=name, font="Arial 16 italic", fill="blue")
-
-def placer_room_3(building, canvas, color_room, name):
-    for room_largeur in building:
-        for room in room_largeur:
-            canvas = Canvas(fenetre, width=room[2]*20, height=room[3]*20, background=color_room)
-            canvas.place(x=room[0]*20,y=height - room[1]*20 - room[3]*20)
-            canvas.create_text(room[2]*10, room[3]*10, text=name, font="Arial 16 italic", fill="black")
+def placer_room_2(area, canvas, height):
+    for floor in area.values():
+        for room in floor:
+            canvas.create_line(room.coordinate_x*20, height - room.coordinate_y*20, (room.coordinate_x)*20, height - (room.coordinate_y+room.height)*20, fill=room.color) #mur est
+            canvas.create_line((room.coordinate_x+ room.width)*20, height - room.coordinate_y*20, (room.coordinate_x+ room.width)*20, height - (room.coordinate_y+room.height)*20, fill=room.color) #mur ouest
+            canvas.create_line(room.coordinate_x*20, height - room.coordinate_y*20, (room.coordinate_x + room.width)*20, height - room.coordinate_y*20, fill=room.color) #mur nord
+            canvas.create_line((room.coordinate_x)*20, height - (room.coordinate_y+room.height)*20, (room.coordinate_x+ room.width)*20, height - (room.coordinate_y+room.height)*20, fill=room.color) #mur sud
+            canvas.create_text((room.coordinate_x*20+room.coordinate_x*20+room.width*20)/2, height -(room.coordinate_y + room.coordinate_y + room.height)*10, text=room.name, font="Arial 16 italic", fill="blue")
             
+def placer_room_3(area, canvas, color_element, height, fenetre):
+    for floor in area.values():
+            for room in floor:
+                canvas = Canvas(fenetre, width=room.width*20, height=room.height*20, background=room.color)
+                canvas.place(x=room.coordinate_x*20, y=height - room.coordinate_y*20 - room.height*20)
+                canvas.create_text(room.width*10, room.height*10, text=room.name, font="Arial 16 italic", fill="black")
+                for element in room.elements:
+                    canvas_element = Canvas(canvas, width=element.width*20, height=element.height*20, background=color_element)
+                    canvas_element.place(x=element.coordinate_x*20, y=room.height *20 - element.coordinate_y*20 - element.height*20)
+                        
 
 
-            
-
-placer_room_2(building, canvas, 'orange', "room")
-placer_room_2(couloir, canvas, 'blue', "")
-canvas.pack()
-fenetre.mainloop()
 
 

@@ -1,4 +1,5 @@
 import numpy as np
+from visualisation import *
 
 class Building:
     def __init__(self, width, height, nbfloor):
@@ -99,6 +100,7 @@ class Area:
 
     def add_element(self, element):
         if self.collision(element):
+
             print("Error : there is already an element at this place")
         elif self.area_not_in_building(element):
             print("Error : The element is not in the area")
@@ -177,58 +179,6 @@ class Outside(Area):
         super().__init__(coordinate_x, coordinate_y, width, heigh)
         self.color = 'green'
         self.name = 'outside'
-
-#Test ajouter des Areas
-building = Building(40, 20, 2)
-room1 = Area(0,0, 10, 10)
-building.add_area(room1, 1)
-
-room2 = Area(12, 0, 10, 10)
-building.add_area(room2, 1)
-
-room3 = Area(0,10, 10, 10)
-building.add_area(room3, 1)
-
-#Test ajouter des elements
-element1 = Element(1,1, 2,2)
-building.areas[1][0].add_element(element1)
-
-element2 = Element(5,5, 2,2)
-building.areas[1][0].add_element(element2)
-
-#Test ajouter room
-chambre = Room(12,10, 10, 10)
-building.add_area(chambre, 1)
-
-#Test ajouter corridor
-corridor = Corridor(10, 0, 2, 20)
-building.add_area(corridor, 1)
-
-from tkinter import *
-
-fenetre = Tk()
-
-# canvas
-width=building.width*20
-height=building.height*20
-canvas = Canvas(fenetre, width=width, height=height, background='white')
-
-def placer_room_3(area, canvas, color_element):
-    for floor in area.values():
-            for room in floor:
-                canvas = Canvas(fenetre, width=room.width*20, height=room.height*20, background=room.color)
-                canvas.place(x=room.coordinate_x*20, y=height - room.coordinate_y*20 - room.height*20)
-                canvas.create_text(room.width*10, room.height*10, text=room.name, font="Arial 16 italic", fill="black")
-                for element in room.elements:
-                    canvas_element = Canvas(canvas, width=element.width*20, height=element.height*20, background=color_element)
-                    canvas_element.place(x=element.coordinate_x*20, y=room.height *20 - element.coordinate_y*20 - element.height*20)
-                        
-
-placer_room_3(building.areas, canvas, 'blue')
-
-
-canvas.pack()
-fenetre.mainloop()
 
 
 

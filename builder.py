@@ -25,21 +25,8 @@ Decouples the creation of a complex object and its representation.
 """
 
 from visualisation import *
-
-# Abstract Building
-class Building:
-    def __init__(self):
-        self.build_floor()
-        self.build_size()
-
-    def build_floor(self):
-        raise NotImplementedError
-
-    def build_size(self):
-        raise NotImplementedError
-
-    def __repr__(self):
-        return "Floor: {0.floor} | Size: {0.size}".format(self)
+from classes_2 import *
+from tkinter import *
 
 
 # Concrete Buildings
@@ -55,41 +42,64 @@ class Simple_design(Building):
         placer_room(self.truc, self.floor, signe) #placer un élement dans le building
 
 class Medium_design(Building):
-    def build_floor(self):
-        self.floor = Canvas(fenetre, width=longueur*20 + 20, height=largeur*20 + 20, background='white')
+    def build_floor(self, fenetre):
+        width=self.width*20
+        height=self.height*20
+        canvas = Canvas(fenetre, width=width, height=height, background='white')
+        return canvas
         
-    def build_room(self, color):
-        placer_room_2(self.rooms, self.floor, color, "room") #placer les rooms dans le building
+    def build_areas(self, canvas, height, fenetre):
+        placer_room_2(self.areas, canvas, height) 
     
-    def build_truc(self, color):
-        placer_room_2(self.truc, self.floor, color, "room") #placer un élement dans le building
+
+class High_design(Building):
+    def build_floor(self, fenetre):
+        width=self.width*20
+        height=self.height*20
+        canvas = Canvas(fenetre, width=width, height=height, background='white')
+        return canvas
+    
+    def build_areas(self, canvas, height, fenetre):
+        placer_room_3(self.areas, canvas, 'blue', height, fenetre)
 
 
-def construct_building(cls, color_list):
-    building = cls()
-    building.build_floor(color_list[0])
-    building.build_size(color_list[1])
+def construct_building(cls):
+
+    #Test ajouter des Areas
+    building = cls(40, 20, 2)
+
+    room1 = Area(0,0, 10, 10)
+    building.add_area(room1, 1)
+
+    room2 = Area(12, 0, 10, 10)
+    building.add_area(room2, 1)
+
+    room3 = Area(0,10, 10, 10)
+    building.add_area(room3, 1)
+
+    #Test ajouter des elements
+    element1 = Element(1,1, 2,2)
+    building.areas[1][0].add_element(element1)
+
+    element2 = Element(5,5, 2,2)
+    building.areas[1][0].add_element(element2)
+
+    #Test ajouter room
+    chambre = Room(12,10, 10, 10)
+    building.add_area(chambre, 1)
+
+    #Test ajouter corridor
+    corridor = Corridor(10, 0, 2, 20)
+    building.add_area(corridor, 1)
+
+    
+    fenetre = Tk()
+    floor = building.build_floor(fenetre)
+    building.build_areas(floor, building.get_height()*20, fenetre)
+    floor.pack()
+    fenetre.mainloop()
     return building
 
 
-
-
-def main():
-    """
-    >>> house = House()
-    >>> house
-    Floor: One | Size: Big
-    >>> flat = Flat()
-    >>> flat
-    Floor: More than One | Size: Small
-    # Using an external constructor function:
-    >>> complex_house = construct_building(ComplexHouse)
-    >>> complex_house
-    Floor: One | Size: Big and fancy
-    """
-
-
 if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
+    building = construct_building(Medium_design)
