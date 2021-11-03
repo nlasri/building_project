@@ -32,7 +32,7 @@ from interface_2 import *
 
 # Concrete Buildings
 
-class Simple_design(Building):
+class Simple_design(Building): # Peut etre a enlever
     def build_floor(self):
         self.floor = np.zeros((self.largeur, self.longueur)) #longueur et largeur du batiment pour faire le tableau de base
         
@@ -42,7 +42,7 @@ class Simple_design(Building):
     def build_truc(self, signe):
         placer_room(self.truc, self.floor, signe) #placer un élement dans le building
 
-class Medium_design(Building):
+class Medium_design(Building): #Design avec des barres, on ne voit pas les éléments dessus
     def build_floor(self, fenetre):
         width=self.width*20
         height=self.height*20
@@ -53,7 +53,7 @@ class Medium_design(Building):
         placer_room_2(self.areas, canvas, height) 
     
 
-class High_design(Building):
+class High_design(Building): #design meilleur quali
     def build_floor(self, fenetre):
         width=self.width*20
         height=self.height*20
@@ -64,45 +64,7 @@ class High_design(Building):
         placer_room_3(floor, canvas, 'blue', height, fenetre)
 
 
-def construct_building2(cls):
-
-    #Test ajouter des Areas
-    building = cls(40, 20, 2)
-
-    room1 = Area(0,0, 10, 10)
-    building.add_area(room1, 1)
-
-    room2 = Area(12, 0, 10, 10)
-    building.add_area(room2, 1)
-
-    room3 = Area(0,10, 10, 10)
-    building.add_area(room3, 1)
-
-    #Test ajouter des elements
-    element1 = Element(1,1, 2,2)
-    building.areas[1][0].add_element(element1)
-
-    element2 = Element(5,5, 2,2)
-    building.areas[1][0].add_element(element2)
-
-    #Test ajouter room
-    chambre = Room(12,10, 10, 10)
-    building.add_area(chambre, 1)
-
-    #Test ajouter corridor
-    corridor = Corridor(10, 0, 2, 20)
-    building.add_area(corridor, 1)
-
-    
-    fenetre = Tk()
-    floor = building.build_floor(fenetre)
-    building.build_areas(floor, building.get_height()*20, fenetre)
-    floor.pack()
-    fenetre.mainloop()
-    return building
-
-
-def construct_building(cls):
+def construct_building(cls): #Constructeur
     #Creation of a window
     root = Tk()
     root.title("Entry Boxes")
@@ -125,7 +87,7 @@ def construct_building(cls):
     root.mainloop()
 
 
-def creation_building(my_entries, root, cls):
+def creation_building(my_entries, root, cls): #PErmet de créer le building à partir des valeurs que l'utilisateur donne
     values = []
     for entry in my_entries:
         values.append(entry.get())
@@ -139,13 +101,15 @@ def creation_building(my_entries, root, cls):
 
     return building_created
 
-def generate_building(my_entries, building_created):
+def generate_building(my_entries, building_created): #génère un nouvel element du building à partir des valeurs données à l'interface
+    #Attention mettre dans le readme ou à un endroit le fonctionnment du truc : un élément ne peut etre créé que si une pièce existe dans l'étage. Les éléments sont attribués à la dernière pièce créée
     values = []
     for entry in my_entries:
         values.append(entry.get())
 
     if values[0]=='Element':
-        pass
+        element = Element(int(values[1]), int(values[2]), int(values[3]), int(values[4]))
+        building_created.areas[int(values[5])][-1].add_element(element)
     else:
         if values[0]=='Area':
             area = Area(int(values[1]), int(values[2]), int(values[3]), int(values[4]))
@@ -158,7 +122,7 @@ def generate_building(my_entries, building_created):
         building_created.add_area(area, int(values[5]))
     design_building(building_created)
 
-def design_building(building_created):
+def design_building(building_created): #creation du design
     i=0
     for floor_areas in building_created.areas.values():
         fenetre = Tk()
