@@ -27,6 +27,7 @@ Decouples the creation of a complex object and its representation.
 from visualisation import *
 from classes_2 import *
 from tkinter import *
+from interface_2 import *
 
 
 # Concrete Buildings
@@ -63,7 +64,7 @@ class High_design(Building):
         placer_room_3(self.areas, canvas, 'blue', height, fenetre)
 
 
-def construct_building(cls):
+def construct_building2(cls):
 
     #Test ajouter des Areas
     building = cls(40, 20, 2)
@@ -101,5 +102,40 @@ def construct_building(cls):
     return building
 
 
+def construct_building(cls):
+    #Create building
+    building_created = cls(40, 20, 2)
+
+    generate_interface(building_created)
+
+    
+    return building_created
+
+def generate_building(my_entries, building_created):
+    values = []
+    for entry in my_entries:
+        values.append(entry.get())
+
+    if values[0]=='Element':
+        pass
+    else:
+        if values[0]=='Area':
+            area = Area(int(values[1]), int(values[2]), int(values[3]), int(values[4]))
+        elif values[0]=='Room':
+            area = Room(int(values[1]), int(values[2]), int(values[3]), int(values[4]))
+        elif values[0]=='Corridor':
+            area = Corridor(int(values[1]), int(values[2]), int(values[3]), int(values[4]))
+        elif values[0]=='Outside':
+            area = Room(int(values[1]), int(values[2]), int(values[3]), int(values[4]))
+        building_created.add_area(area, int(values[5]))
+    design_building(building_created)
+
+def design_building(building_created):
+    fenetre = Tk()
+    floor = building_created.build_floor(fenetre)
+    building_created.build_areas(floor, building_created.get_height()*20, fenetre)
+    floor.pack()
+    fenetre.mainloop()
+
 if __name__ == "__main__":
-    building = construct_building(Medium_design)
+    building = construct_building(High_design)

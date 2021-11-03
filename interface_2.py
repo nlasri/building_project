@@ -1,34 +1,44 @@
 from tkinter import *
-
-root = Tk()
-root.title("Entry Boxes")
-root.geometry("700x500")
-root.configure(background='LightSteelBlue2')
-
-my_entries = {}
-
-def generate_building():
-    print('room')
-    print(my_entries)
+from builder import generate_building
 
 
-title = Label(root, text = 'BUILDING', anchor = CENTER, justify = CENTER, bg='lightsteelblue4')
+def generate_interface(building_created):
 
-title.grid(row = 0, columnspan = 6, sticky = 'nesw')
+    #Intro
+    root = Tk()
+    root.title("Entry Boxes")
+    root.geometry("900x500")
+    root.configure(background='LightSteelBlue2')
+    title = Label(root, text = 'BUILDING', anchor = CENTER, justify = CENTER, bg='lightsteelblue4')
+    title.grid(row = 0, columnspan = 6, sticky = 'nesw')
 
-element=['Floor', 'Room', 'Element']
-for y in range(1,4):
-    my_label = Label(root, text=element[y-1], bg='Dodger Blue')
-    my_label.grid(row=y, column=0, pady=20, sticky = 'nesw')
-    my_entries[element[y-1]]=[]
-    for x in range(1,5):
+    #Selection
+    my_label = Label(root, text='Element', bg='Dodger Blue')
+    my_label.grid(row=1, column=0, pady=20, sticky = 'nesw')
+    my_entries=[]
+
+    #Kind
+    OptionList = ["Area","Room","Corridor","Door", "Outside","Element"] 
+    variable = StringVar(root)
+    variable.set(OptionList[0])
+    opt = OptionMenu(root, variable, *OptionList)
+    opt.grid(row=1, column=1, pady=20, padx=5)
+    my_entries.append(variable)
+
+    #Coordinates and measures
+    label = ['coordinate x', 'coordinate y', 'width', 'height', 'floor']
+    for x in range(2,7):
         my_entry = Entry(root)
-        my_entry.insert(0, element[y-1] + str(x))
-        my_entry.grid(row=y, column=x, pady=20, padx=5)
-        my_entries[element[y-1]].append(my_entry.get())
+        my_entry.insert(0, label[x-2])
+        my_entry.grid(row=1, column=x, pady=20, padx=5)
+        my_entries.append(my_entry)
 
-my_button = Button(root, text="Create my building", command=generate_building, bg='lightsteelblue4')
-my_button.grid(row=6, column=0, pady=20)
+    #button
+    my_button = Button(root, text="Create my building", command= lambda: generate_building(my_entries, building_created), bg='lightsteelblue4')
+    my_button.grid(row=6, column=0, pady=20)
+
+    root.mainloop()
 
 
-root.mainloop()
+
+
