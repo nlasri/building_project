@@ -17,8 +17,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def Kmeans(X_train,X_test):
-    kmeans = KMeans(n_clusters=2, random_state=0).fit(X_train)
+def Kmeans_people(X_train,X_test,k):
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(X_train)
     pred = kmeans.predict(X_test)
     return(pred)
 
@@ -195,3 +195,16 @@ def tracer_graham(input_points,final_list):
     plt.grid()
 
 tracer_graham(input_points,final_list)
+
+def show_cluster(building,people):
+    n = len(building.areas)
+    for i in range(n):
+        Xtrain_floor_i = create_X_train_floor(building.areas[i])
+        k = len(building.areas[i])
+        pred_i = Kmeans_people(Xtrain_floor_i,people[i],k)
+        fig, ax = plt.subplots()
+        ax.scatter(people[i][:,0], people[i][:,1], c = pred_i)
+        list_graham = convexHull(people, len(people))
+        tracer_graham(people, list_graham)
+
+        
