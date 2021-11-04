@@ -14,12 +14,32 @@ Created on Wed Nov  3 01:29:28 2021
 
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def Kmeans(X_train,X_test):
     kmeans = KMeans(n_clusters=2, random_state=0).fit(X_train)
     pred = kmeans.predict(X_test)
     return(pred)
+
+def create_X_train_floor(area):
+    people_coordinate = np.zeros((0,2))
+    nb_areas = len(area)
+    for j in range(area):
+        people_area = np.zeros((20,2))
+        coordinates = area[j].get_coordinates()
+        absc = coordinates[0]
+        ordi = coordinates[1]
+        length = coordinates[2]
+        height = coordinates[3]
+        rand_abs = ((length + absc) - absc) * np.random.random_sample() + absc
+        rand_ord = ((height + ordi) - ordi) * np.random.random_sample() + ordi
+        people_area[:,0] = rand_abs
+        people_area[:,1] = rand_ord
+        np.concatenate((people_coordinate,people_area))
+    return(people_coordinate)
+
+            
 
  
 from functools import cmp_to_key
