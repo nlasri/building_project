@@ -16,13 +16,22 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+from functools import cmp_to_key
 
 def Kmeans_people(X_train,X_test,k):
+    """Return the prediction according to the KMeans method
+    Args : X_train (np.array) : training set
+           X_test (np.array) : test set
+           k (int) : number of clusters
+    Returns : pred (np.array) : the predictions of the label of X_test"""
     kmeans = KMeans(n_clusters=k, random_state=0).fit(X_train)
     pred = kmeans.predict(X_test)
     return(pred)
 
 def create_X_train_floor(area):
+    """Create Training Set of a floor by separating the different areas
+    Args : area (list[Area]) : list of areas of the floor
+    Returns : people_coordinates (np.array) table of the coordinates of people created"""
     people_coordinate = np.zeros((0,2))
     nb_areas = len(area)
     for j in range(nb_areas):
@@ -43,13 +52,7 @@ def create_X_train_floor(area):
             
 
  
-from functools import cmp_to_key
- 
-# A class used to store the x and y coordinates of points
-class Point:
-    def __init__(self, x = None, y = None):
-        self.x = x
-        self.y = y
+
  
 # A global point needed for sorting points with reference
 # to the first point
@@ -99,6 +102,10 @@ def compare(p1, p2):
  
 # Prints convex hull of a set of n points.
 def convexHull(points, n):
+    """Return the points that compose the Graham convex envelope
+    Args : points (list) : list of points
+           n : length of points
+    Returns : S (list) : list of points that compose the Graham convex envelope"""
    
     # Find the bottommost point
     ymin = points[0][1]
@@ -162,28 +169,15 @@ def convexHull(points, n):
         (orientation(nextToTop(S), S[-1], points[i]) != 2)):
             S.pop()
         S.append(points[i])
- 
-    # Now stack has the output points,
-    # print contents of stack
-    # while S:
-    #     p = S[-1]
-    #     #print("(" + str(p[0]) + ", " + str(p[1]) + ")")
-    #     print(p)
-    #     S.pop()
-
     return(S)
- 
-# Driver Code
-# input_points = [[0, 3], [1, 1], [2, 2], [4, 4],
-#                 [0, 0], [1, 2], [3, 1], [3, 3]]
-# # points = []
-# # for point in input_points:
-# #     points.append(Point(point[0], point[1]))
-# n = len(input_points)
-# final_list = convexHull(input_points, n)
 
 
-def tracer_graham(input_points,final_list, fig, ax):
+def trace_graham(input_points,final_list, fig, ax):
+    """Plot the Graham convex envelope
+    Args : input_points (list) : list of points
+           final_list (list) : list of points tha compose the Graham convex envelope
+           fig (fig) : figure to plot
+           ax (ax) : ax to plot"""
     x_points = [P[0] for P in input_points]
     y_points = [P[1] for P in input_points]
     ax.plot(x_points, y_points, 'ok', markersize=1)
@@ -195,9 +189,13 @@ def tracer_graham(input_points,final_list, fig, ax):
     ax.plot(xs, ys, 'ro', markersize=6)
     ax.grid()
 
-# tracer_graham(input_points,final_list)
 
 def repartir_clusters(points,pred, k):
+    """Put the points in a list according to their label
+    Args : points (list) : list of points
+           pred (list) : list of labels
+           k (int) : list of clusters
+    Returns : list_clusters : list of points according to their clusters"""
     n = len(points)
     list_cluster = []
     for i in range(k):
@@ -208,6 +206,9 @@ def repartir_clusters(points,pred, k):
             
 
 def show_cluster(building,people):
+    """Plot the Graham convex envelop per floor according to the clusters
+    Args : building (Building) : building object
+           people (list) : list of people's coordinates"""
     n = len(building.areas)
     for i in range(n):
         Xtrain_floor_i = create_X_train_floor(building.areas[i])
@@ -219,4 +220,4 @@ def show_cluster(building,people):
             list_cluster = repartir_clusters(people[i], pred_i, k)
             for j in range(k):
                 list_graham = convexHull(list_cluster[j], len(list_cluster[j]))
-                tracer_graham(people[i], list_graham, fig, ax)
+                trace_graham(people[i], list_graham, fig, ax)
