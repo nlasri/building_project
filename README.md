@@ -33,7 +33,7 @@ Each area/element can be added with the following information:
 
 If the user wants to add elements to the areas, he must do so at the same time as he creates the areas. Indeed, an element is automatically added to the last created area of the floor.
 
-**Attention!** The user must follow the following rules :
+**Warning!** The user must follow the following rules :
   * The area added has to be in the building (if not a message of error will be displayed in the prompt).
   * An element added to an area has to be in the area (if not a message of error will be displayed in the prompt).
 
