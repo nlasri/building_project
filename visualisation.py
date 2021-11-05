@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov  3 21:29:28 2021
+
+@author: Alain Tran, Narjisse Lasri
+"""
+
 import numpy as np
 from tkinter import *
 from classes import *

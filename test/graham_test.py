@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Nov  5 20:40:33 2021
+Created on Wed Nov  3 21:29:28 2021
 
-@author: Alain
+@author: Alain Tran, Narjisse Lasri
 """
 import os, sys
 

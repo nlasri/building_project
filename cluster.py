@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov  3 01:29:28 2021
+Created on Wed Nov  3 21:29:28 2021
 
-@author: Alain
+@author: Alain Tran, Narjisse Lasri
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov  3 01:29:28 2021
-
-@author: Alain
-"""
 
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt

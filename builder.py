@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov  3 21:29:28 2021
+
+@author: Alain Tran, Narjisse Lasri
+"""
+
 """
 *What is this pattern about?
 It decouples the creation of a complex object and its representation,

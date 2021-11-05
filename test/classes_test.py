@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov  3 21:29:28 2021
+
+@author: Alain Tran, Narjisse Lasri
+"""
+
 import os, sys
 
 p = os.path.abspath('.')
