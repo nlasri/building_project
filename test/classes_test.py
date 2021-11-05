@@ -3,7 +3,7 @@ import os, sys
 p = os.path.abspath('.')
 sys.path.insert(1, p)
 
-from classes_2 import *
+from classes import *
 
 import unittest
 
