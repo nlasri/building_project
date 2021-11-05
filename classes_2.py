@@ -91,7 +91,7 @@ class Area:
                     return True
         return False
 
-    def area_not_in_building(self, element):
+    def element_not_in_area(self, element):
         if element.coordinate_x + element.width > self.width:
             return True
         elif element.coordinate_y + element.height > self.height:
@@ -100,9 +100,8 @@ class Area:
 
     def add_element(self, element):
         if self.collision(element):
-
             print("Error : there is already an element at this place")
-        elif self.area_not_in_building(element):
+        elif self.element_not_in_area(element):
             print("Error : The element is not in the area")
         else :
             self.elements.append(element)
@@ -126,6 +125,8 @@ class Element():
         self.height = height
         self.coordinate_x = coordinate_x
         self.coordinate_y = coordinate_y
+        self.color = 'coral'
+        self.name = 'element'
 
     def get_width(self):
         return self.width
@@ -139,6 +140,9 @@ class Element():
     def get_coordinate_y(self):
         return self.coordinate_y
 
+    def get_coordinates(self):
+        return np.array([self.coordinate_x, self.coordinate_y, self.width, self.height])
+
 
 class Wall(Element):
     def __init__(self, coordinate_x, coordinate_y, width, heigh):
@@ -148,17 +152,17 @@ class Wall(Element):
 class Door(Element):
     def __init__(self, coordinate_x, coordinate_y, width, heigh):
         super().__init__(coordinate_x, coordinate_y, width, heigh)
+        self.color = 'sienna'
 
     def is_possible(self, area):
-        table_walls = area.walls
-        if self.coordinate_x == table_walls[0].coordinate_x:
-            return(table_walls[1].coordinate_y < self.coordinate_y < table_walls[1].coordinate_y + table_walls[1].height)
-        if self.coordinate_y == table_walls[0].coordinate_y:
-            return(table_walls[0].coordinate_x < self.coordinate_x < table_walls[0].coordinate_x + table_walls[0].width)
-        if self.coordinate_y == table_walls[2].coordinate_y:
-            return(table_walls[2].coordinate_x < self.coordinate_x < table_walls[2].coordinate_x + table_walls[2].width)
-        if self.coordinate_x == table_walls[3].coordinate_x:
-            return(table_walls[3].coordinate_y < self.coordinate_y < table_walls[3].coordinate_y + table_walls[2].height)
+        if (self.height==0) and (self.coordinate_y==0):
+            return True
+        elif (self.height==0) and (self.coordinate_y==area.height):
+            return True
+        elif (self.width==0) and (self.coordinate_x==0):
+            return True
+        elif (self.width==0) and (self.coordinate_x==area.width):
+            return True
         else:
             return(False)
 
@@ -179,9 +183,4 @@ class Outside(Area):
         super().__init__(coordinate_x, coordinate_y, width, heigh)
         self.color = 'green'
         self.name = 'outside'
-
-
-
-
-
 
