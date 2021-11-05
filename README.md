@@ -57,3 +57,6 @@ During the creation of the building, the building is automatically saved. The us
 
 ## Kmeans and Graham
 Now that the building is created and modeled, the user will be able to detect clusters of people in the building. In order to do that, the user can use the file "cluster.py" that has the implementation of the Kmeans and Graham convex envelope method. In particular, the user can use the show_cluster function that plot show people coordinates and group them according to their clusters (these clusters will be delimited thanks to the Graham convex envelope).
+To use the show_cluster function, the user just needs to give the following arguments :
+ * The building created (Building)
+ * A list of list representating people's coordinates floor by floor (list)
