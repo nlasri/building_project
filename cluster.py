@@ -211,14 +211,16 @@ def show_cluster(building,people):
            people (list) : list of people's coordinates"""
     n = len(building.areas)
     for i in range(n):
-        Xtrain_floor_i = create_X_train_floor(building.areas[i])
+        if people[i] != []:
+            Xtrain_floor_i = create_X_train_floor(building.areas[i])
         k = len(building.areas[i])
         fig, ax = plt.subplots()
         plt.title("Floor " + str(i))
         ax.grid()
-        if k > 0:
+        if k > 0 and people[i] != []:
             pred_i = Kmeans_people(Xtrain_floor_i,people[i],k)
             list_cluster = repartir_clusters(people[i], pred_i, k)
             for j in range(k):
                 list_graham = convexHull(list_cluster[j], len(list_cluster[j]))
                 trace_graham(people[i], list_graham, fig, ax)
+    plt.show()
