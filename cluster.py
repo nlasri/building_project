@@ -214,6 +214,7 @@ def show_cluster(building,people):
         Xtrain_floor_i = create_X_train_floor(building.areas[i])
         k = len(building.areas[i])
         fig, ax = plt.subplots()
+        plt.title("Floor " + str(i))
         ax.grid()
         if k > 0:
             pred_i = Kmeans_people(Xtrain_floor_i,people[i],k)
