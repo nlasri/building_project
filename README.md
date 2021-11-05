@@ -60,3 +60,5 @@ Now that the building is created and modeled, the user will be able to detect cl
 To use the show_cluster function, the user just needs to give the following arguments :
  * The building created (Building)
  * A list of list representating people's coordinates floor by floor (list)
+
+An example of the use of the show_cluster function is given in the final_building.py file: the previously saved building is used to detect clusters of people in the building.
