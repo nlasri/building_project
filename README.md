@@ -51,3 +51,6 @@ This design is automatically choosen.
 This design use lines of colors to represent the areas of the building.
 In this design, the elements aren't representated.
 To choose this design, the user has to replace "high_design" by "medium_design" in the file "builder.py" in the part "if __name__ == "__main__":".
+
+## Saving the building
+During the creation of the building, the building is automatically saved. The user can work on the building later to add/delete areas or add alements. For that, the user can use the file "final_building.py".
