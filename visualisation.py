@@ -10,7 +10,7 @@ from tkinter import *
 from classes import *
 
 
-def placer_room_2(area, canvas, height):
+def place_room_2(area, canvas, height):
     """Generate the medium design.
         This design use lines to represent the areas of the building.
         The color of each kind of area is used to design the building.
@@ -28,7 +28,7 @@ def placer_room_2(area, canvas, height):
         canvas.create_line((room.coordinate_x)*20, height - (room.coordinate_y+room.height)*20, (room.coordinate_x+ room.width)*20, height - (room.coordinate_y+room.height)*20, fill=room.color) #mur sud
         canvas.create_text((room.coordinate_x*20+room.coordinate_x*20+room.width*20)/2, height -(room.coordinate_y + room.coordinate_y + room.height)*10, text=room.name, font="Arial 16 italic", fill="blue")
             
-def placer_room_3(area, canvas, height, fenetre):
+def place_room_3(area, canvas, height, fenetre):
     """Generate the high design.
        This design use rectangle of colors to represent areas and its elements.
        The color of each kind of area/element is used to design the building.

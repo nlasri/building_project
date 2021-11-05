@@ -49,7 +49,7 @@ class Medium_design(Building):
             height (float): Height of the floor
             fenetre (tk): The window in which the canvas will be.
         """
-        placer_room_2(floor, canvas, height) 
+        place_room_2(floor, canvas, height) 
     
 
 class High_design(Building): #design meilleur quali
@@ -80,7 +80,7 @@ class High_design(Building): #design meilleur quali
             height (float): Height of the floor
             fenetre (tk): The window in which the canvas will be.
         """
-        placer_room_3(floor, canvas, height, fenetre)
+        place_room_3(floor, canvas, height, fenetre)
 
 
 def construct_building(cls): #Constructeur
