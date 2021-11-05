@@ -25,18 +25,18 @@ def Kmeans_people(X_train,X_test,k):
 def create_X_train_floor(area):
     people_coordinate = np.zeros((0,2))
     nb_areas = len(area)
-    for j in range(area):
+    for j in range(nb_areas):
         people_area = np.zeros((20,2))
         coordinates = area[j].get_coordinates()
         absc = coordinates[0]
         ordi = coordinates[1]
         length = coordinates[2]
         height = coordinates[3]
-        rand_abs = ((length + absc) - absc) * np.random.random_sample() + absc
-        rand_ord = ((height + ordi) - ordi) * np.random.random_sample() + ordi
+        rand_abs = ((length + absc) - absc) * np.random.random_sample(20) + absc
+        rand_ord = ((height + ordi) - ordi) * np.random.random_sample(20) + ordi
         people_area[:,0] = rand_abs
         people_area[:,1] = rand_ord
-        np.concatenate((people_coordinate,people_area))
+        people_coordinate = np.concatenate((people_coordinate,people_area))
     return(people_coordinate)
 
             
@@ -173,38 +173,39 @@ def convexHull(points, n):
     return(S)
  
 # Driver Code
-input_points = [[0, 3], [1, 1], [2, 2], [4, 4],
-                [0, 0], [1, 2], [3, 1], [3, 3]]
-# points = []
-# for point in input_points:
-#     points.append(Point(point[0], point[1]))
-n = len(input_points)
-final_list = convexHull(input_points, n)
+# input_points = [[0, 3], [1, 1], [2, 2], [4, 4],
+#                 [0, 0], [1, 2], [3, 1], [3, 3]]
+# # points = []
+# # for point in input_points:
+# #     points.append(Point(point[0], point[1]))
+# n = len(input_points)
+# final_list = convexHull(input_points, n)
 
 
 def tracer_graham(input_points,final_list):
     x_points = [P[0] for P in input_points]
     y_points = [P[1] for P in input_points]
-    plt.plot(x_points, y_points, 'ok', markersize=1)
+    fig, ax = plt.subplots()
+    ax.plot(x_points, y_points, 'ok', markersize=5)
     xs = [P[0] for P in final_list]
     ys = [P[1] for P in final_list]
     xs.append(final_list[0][0])
     ys.append(final_list[0][1])
-    plt.plot(xs, ys, 'k')
-    plt.plot(xs, ys, 'ro', markersize=6)
-    plt.grid()
+    ax.plot(xs, ys, 'k')
+    ax.plot(xs, ys, 'ro', markersize=6)
+    ax.grid()
 
-tracer_graham(input_points,final_list)
+# tracer_graham(input_points,final_list)
 
 def show_cluster(building,people):
     n = len(building.areas)
     for i in range(n):
         Xtrain_floor_i = create_X_train_floor(building.areas[i])
         k = len(building.areas[i])
-        pred_i = Kmeans_people(Xtrain_floor_i,people[i],k)
-        fig, ax = plt.subplots()
-        ax.scatter(people[i][:,0], people[i][:,1], c = pred_i)
-        list_graham = convexHull(people, len(people))
-        tracer_graham(people, list_graham)
+        if k > 0:
+            pred_i = Kmeans_people(Xtrain_floor_i,people[i],k)
+            fig, ax = plt.subplots()
+            #ax.scatter(people[i][:,0], people[i][:,1], c = pred_i)
+            list_graham = convexHull(people[i], len(people[i]))
+            tracer_graham(people[i], list_graham)
 
-        
